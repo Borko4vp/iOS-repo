@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "ViewController.addCorrectAnswerLettersToView(letterCount : Int) -&gt; ():ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "correctAnswerLettersView.subviews.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GuessGame.check(letter : String) -&gt; (retValue : Int, Index : Int):GuessGame.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "currentQuestion">
+            </PersistentString>
+            <PersistentString
+               value = "questions.count-1">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
