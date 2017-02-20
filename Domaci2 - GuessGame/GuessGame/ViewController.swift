@@ -66,7 +66,7 @@ class ViewController: UIViewController {
 
     func createPopUpViewWith(text: String, andColor:UIColor){
     
-        let popUp: UIView = UIView(frame: CGRect(x: 0+10, y: self.view.bounds.midY-100, width: self.view.frame.size.width-20, height: 80))
+        let popUp: UIView = UIView(frame: CGRect(x: self.view.frame.size.width*0.05, y: self.view.bounds.height*0.3, width: self.view.frame.size.width*0.9, height: self.view.bounds.height*0.2))
         popUp.backgroundColor = andColor
         let labela: UILabel = UILabel(frame: popUp.bounds)
         labela.text = text
