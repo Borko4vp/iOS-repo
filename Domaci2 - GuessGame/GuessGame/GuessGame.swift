@@ -93,6 +93,10 @@ class GuessGame{
         currentNumberOfErrors = 0
     
     }
+    func restartLevel(){
+        currentIndexInQuestion = 0
+        //currentNumberOfErrors = 0
+    }
 }
 extension String {
     

@@ -15,12 +15,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var lettersBottomView: UIView!
     @IBOutlet weak var correctAnswerLettersView: UIView!
     @IBOutlet weak var imageView: UIImageView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        game = GuessGame()
+    }
+    override func viewDidAppear(_ animated: Bool){
+        initLevel()
+    }
     @IBAction func newGameBtnTapped(_ sender: UIButton) {
         game?.restartGame()
-        enableAllLetterBtns()
-        addCorrectAnswerLettersToView(letterCount: (game?.getCurrentQuestionCorrectAnswerSize())!)
-        addProposedLettersToView()
-        addImageToView()
+        initLevel()
         self.popUpView?.removeFromSuperview()
     }
     @IBAction func letterBtnTapped(_ sender: UIButton) {
@@ -34,14 +39,10 @@ class ViewController: UIViewController {
                     case 1:
                         setCorrectLetterColorAndTitle(title: letterLabel.text!, color: UIColor.yellow, withIndex:checkRet.Index)
                         disableBtn(btn: sender)
-                        
                     case 2:
                         setCorrectLetterColorAndTitle(title: letterLabel.text!, color: UIColor.yellow, withIndex:checkRet.Index)
-                        game?.nextQuestion()
-                        enableAllLetterBtns()
-                        addCorrectAnswerLettersToView(letterCount:(game?.getCurrentQuestionCorrectAnswerSize())!)
-                        addProposedLettersToView()
-                        addImageToView()
+                        disableBtn(btn: sender)
+                        showAlert()
                     case 3:
                         createPopUpViewWith(text: "GAME OVER", andColor:UIColor.darkGray)
                         disableAllLetterBtns()//game over
@@ -107,19 +108,12 @@ class ViewController: UIViewController {
         }
         
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        game = GuessGame()
-        // Do any additional setup after loading the view, typically from a nib.
+    func initLevel(){
+        self.enableAllLetterBtns()
+        self.addCorrectAnswerLettersToView(letterCount:(self.game?.getCurrentQuestionCorrectAnswerSize())!)
+        self.addProposedLettersToView()
+        self.addImageToView()
     }
-    override func viewDidAppear(_ animated: Bool){
-        addCorrectAnswerLettersToView(letterCount: (game?.getCurrentQuestionCorrectAnswerSize())!)
-        addProposedLettersToView()
-        addImageToView()
-
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -180,7 +174,21 @@ class ViewController: UIViewController {
             btn.backgroundColor = UIColor.black
             correctAnswerLettersView.addSubview(btn)
         }
-
+    }
+    func showAlert(){
+        let alert: UIAlertController = UIAlertController(title: "Level clear", message: "you have completed the level, please choose ", preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "NextLevel", style: UIAlertActionStyle.default){ (handler: UIAlertAction) in
+            self.game?.nextQuestion()
+            self.initLevel()
+        }
+        let cancelAction = UIAlertAction(title: "RestartLevel", style: UIAlertActionStyle.default){ (handler: UIAlertAction) in
+            //self.game?.nextQuestion()
+            self.game?.restartLevel()
+            self.initLevel()
+        }
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
 
 }
