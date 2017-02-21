@@ -250,17 +250,25 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1nV-zF-UtY">
+                                <rect key="frame" x="257" y="63" width="70" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="subviewsCntLabel" destination="1nV-zF-UtY" id="TUH-0e-RZq"/>
                         <outlet property="tapCntLabel" destination="74z-7M-cCS" id="0Ma-d9-d1d"/>
                         <segue destination="bzL-Xz-gXT" kind="show" identifier="fromBoxToHello" id="S50-wr-drJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eRE-Ti-CVn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-647" y="1399"/>
+            <point key="canvasLocation" x="-647.20000000000005" y="1398.3508245877063"/>
         </scene>
         <!--More Info View Controller-->
         <scene sceneID="wVf-WP-IDi">

@@ -36,12 +36,6 @@ class SquareView: UIView {
         default:
             break
         }
-        
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHeppend(_:))))
-    }
-    
-    func tapHeppend(_ sender: UITapGestureRecognizer){
-        self.removeFromSuperview()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -82,6 +76,4 @@ class SquareView: UIView {
         path.fill()
     
     }
-    
-
 }
