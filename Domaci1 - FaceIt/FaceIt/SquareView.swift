@@ -15,7 +15,8 @@ class SquareView: UIView {
     var rotation: CGFloat = 0
     
     init(x:CGFloat, y:CGFloat, side: CGFloat){
-        super.init(frame: CGRect(x: x-side*sqrt(2.00)/2, y: y-side*sqrt(2.00)/2, width: side*sqrt(2.00), height: side*sqrt(2.00)))
+        super.init(frame: CGRect(x: x-side/2, y: y-side/2, width: side, height: side))
+        //super.init(frame: CGRect(x: x-side*sqrt(2.00)/2, y: y-side*sqrt(2.00)/2, width: side*sqrt(2.00), height: side*sqrt(2.00)))
         dimension = side
         self.backgroundColor = UIColor.clear
         rotation = CGFloat(arc4random_uniform(361))
@@ -49,7 +50,7 @@ class SquareView: UIView {
         
         //a bit complicated code for calculating the rotating square points 
         //could be simplified
-        let path = UIBezierPath()
+        /*let path = UIBezierPath()
         var x = dimension*sqrt(2.00)/2 + dimension*sqrt(2.00)/2*cos((rotation-135)*CGFloat(M_PI/180))
         var y = dimension*sqrt(2.00)/2 - dimension*sqrt(2.00)/2*sin((rotation-135)*CGFloat(M_PI/180))
         path.move(to: CGPoint(x:x, y:y))
@@ -68,12 +69,15 @@ class SquareView: UIView {
         
         x = dimension*sqrt(2.00)/2 + dimension*sqrt(2.00)/2*cos((rotation-135+360)*CGFloat(M_PI/180))
         y = dimension*sqrt(2.00)/2 - dimension*sqrt(2.00)/2*sin((rotation-135+360)*CGFloat(M_PI/180))
-        path.addLine(to: CGPoint(x: x, y: y))
+        path.addLine(to: CGPoint(x: x, y: y))*/
         
+        let path: UIBezierPath = UIBezierPath(rect: CGRect(x: 0.0, y: 0.0, width: dimension, height: dimension))
+        self.transform = CGAffineTransform(rotationAngle: (rotation * CGFloat(M_PI/180)))
+        
+        path.lineWidth = 2.0
         UIColor.black.setStroke()
         color.setFill()
-        path.stroke()
         path.fill()
-    
+        path.stroke()
     }
 }
