@@ -13,7 +13,6 @@ class HelloViewController: UIViewController {
     
     var name: String?
     var surname: String?
-    var cnt: Int = 0
     @IBOutlet weak var backBtn: UIButton!
     @IBOutlet weak var helloLabel: UILabel!
     override func viewDidLoad() {
@@ -21,16 +20,14 @@ class HelloViewController: UIViewController {
         
         helloLabel.text = "Hello, " + (name ?? " ") + (surname ?? " ")
         
-        backBtn.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(btnLongPressed)))
+        backBtn.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(btnLongPressed(_:))))
         // Do any additional setup after loading the view.
     }
 
-    func btnLongPressed(){
-        if cnt == 0{
+    func btnLongPressed(_ sender:UIGestureRecognizer){
+        if sender.state == UIGestureRecognizerState.ended {
             performSegue(withIdentifier: SegueNames.sHelloToMain, sender: self)
         }
-        cnt += 1
-        // For some reason this was called twice on long press, so i implemented skipping of the second call :)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -41,16 +41,9 @@ class MainViewController: UIViewController {
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        if let firstNameText_ = firstNameText {
-            firstNameTextField.text = firstNameText_
-        }
-        if let lastNameText_ = lastNameText {
-            lastNameTextField.text = lastNameText_
-        }
-        if let emailText_ = emailText {
-            emailTextField.text = emailText_
-        }
-        
+            firstNameTextField.text = firstNameText
+            lastNameTextField.text = lastNameText
+            emailTextField.text = emailText
     }
     
     @IBAction func onLoginBtnPressed(_ sender: UIButton) {
