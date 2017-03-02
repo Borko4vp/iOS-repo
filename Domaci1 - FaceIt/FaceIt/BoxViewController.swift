@@ -36,6 +36,17 @@ class BoxViewController: UIViewController {
             return swipe
         }()
         self.view.addGestureRecognizer(swipeGesture)
+        
+        /*let from = 0
+        let step = Int(squareSize)
+        let to_width = Int(self.view.bounds.size.width)
+        let to_height = Int(self.view.bounds.size.height)
+        for i in stride(from: from, to: to_width, by: step) {
+            for j in stride(from:from, to: to_height, by: step) {
+                let squareView = SquareView(x: CGFloat(i), y: CGFloat(j), side: squareSize)
+                self.view.addSubview(squareView)
+            }
+        }*/
     }
     func swipeHeppened(_ sender: UISwipeGestureRecognizer){
         performSegue(withIdentifier: SegueNames.sBoxToHello, sender: self)

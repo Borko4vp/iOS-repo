@@ -20,20 +20,26 @@ class SquareView: UIView {
         dimension = side
         self.backgroundColor = UIColor.clear
         rotation = CGFloat(arc4random_uniform(361))
-        let c = arc4random_uniform(6)
+        let c = arc4random_uniform(3)
         switch c {
         case 0:
-            color = UIColor.red
+            color = UIColor.black
         case 1:
-            color = UIColor.blue
+            color = UIColor.gray
         case 2:
-            color = UIColor.green
+            color = UIColor.clear
         case 3:
             color = UIColor.yellow
         case 4:
             color = UIColor.orange
         case 5:
-            color = UIColor.black
+            color = UIColor.red
+        case 6:
+            color = UIColor.blue
+        case 7:
+            color = UIColor.purple
+        case 8:
+            color = UIColor.green
         default:
             break
         }

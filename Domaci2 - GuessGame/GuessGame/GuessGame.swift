@@ -8,6 +8,26 @@
 
 import Foundation
 
+//typealias CheckReturnType = (retValue: Int, index: Int)
+
+public enum ReturnValue{
+    case correctLetterInserted
+    case inCorrectLetterInserted
+    case levelCleared
+    case gameWon
+    case gameOver
+    
+}
+public struct ReturnType{
+    var retValue:ReturnValue
+    var index: Int
+    init (ret:ReturnValue, i:Int){
+        retValue = ret
+        index = i
+    }
+}
+
+
 class GuessGame{
 
     private var currentNumberOfErrors: Int
@@ -16,6 +36,8 @@ class GuessGame{
     private var currentQuestion: Int = 0
     private var currentIndexInQuestion: Int = 0
     
+    private let numberOfProposedLetters: Int  = 12
+    
     private var questions : [Animal]
     
     init()
@@ -23,12 +45,12 @@ class GuessGame{
         currentQuestion = 0
         currentIndexInQuestion = 0
         currentNumberOfErrors = 0
-        questions = [Animal(imageName:"rabbitImage", correct:"rabbit", proposed:"turtlerabbit"),
-                     Animal(imageName:"turtleImage", correct:"turtle", proposed:"turtleabcdef"),
-                     Animal(imageName:"zebraImage", correct:"zebra", proposed:"azrefbdriagn"),
-                     Animal(imageName:"dogImage", correct:"dog", proposed:"hdgjuiofrnmb"),
-                     Animal(imageName:"mouseImage", correct:"mouse", proposed:"epoklmhgusrv"),
-                     Animal(imageName:"horseImage", correct:"horse", proposed:"jklhferovbsa")]
+        questions = [Animal(imageName:"rabbitImage", correct:"rabbit",proposedLettersCnt: numberOfProposedLetters),
+                     Animal(imageName:"turtleImage", correct:"turtle",proposedLettersCnt: numberOfProposedLetters),
+                     Animal(imageName:"zebraImage", correct:"zebra",proposedLettersCnt: numberOfProposedLetters),
+                     Animal(imageName:"dogImage", correct:"dog",proposedLettersCnt: numberOfProposedLetters),
+                     Animal(imageName:"mouseImage", correct:"mouse",proposedLettersCnt: numberOfProposedLetters),
+                     Animal(imageName:"horseImage", correct:"horse",proposedLettersCnt: numberOfProposedLetters)]
     }
 
     private class Animal{
@@ -36,12 +58,27 @@ class GuessGame{
         var correctAnswer: String
         var proposedLetters:String
         
-        init(imageName:String, correct:String, proposed:String){
+        init(imageName:String, correct:String, proposedLettersCnt:Int){
             image = imageName
             correctAnswer = correct
-            proposedLetters = proposed
+            proposedLetters = String()
+            proposedLetters = generateProposedLettersFor(howMany:proposedLettersCnt)
+        }
+        func generateProposedLettersFor(howMany:Int)-> String{
+            let lettersPool = "abcdefghijklmnopqrstuvwxyz"
+            var retString = self.correctAnswer
+            for _ in 0..<howMany-self.correctAnswer.characters.count {
+                let rand = Int(arc4random_uniform(UInt32(lettersPool.characters.count)))
+                retString.append(lettersPool[rand] as Character)
+            }
+            return retString.shuffleCharacters()
         }
         
+    }
+    private func shuffleAllTheProposeds(){
+        for index in 0..<questions.count{
+            questions[index].proposedLetters = questions[index].proposedLetters.shuffleCharacters()
+        }
     }
     func getCurrentQuestionImageName() -> String{
         return questions[currentQuestion].image
@@ -60,30 +97,30 @@ class GuessGame{
         }
     }
     
-    func check(letter:String) -> (retValue:Int, Index:Int){
+    func check(letter:String) -> ReturnType{
         let correctLetter: Character = questions[currentQuestion].correctAnswer[currentIndexInQuestion]
-        if (correctLetter == letter[0]){
-            if (currentIndexInQuestion == questions[currentQuestion].correctAnswer.characters.count-1){
+        if (correctLetter == letter[0]){ //if the letter user clicked is correct
+            if (currentIndexInQuestion == questions[currentQuestion].correctAnswer.characters.count-1){//if the letter user clicked is correct and it is the last one in the word
                 let retCurrent = currentIndexInQuestion
                 currentIndexInQuestion = 0
-                if currentQuestion == questions.count-1{
-                    return (4,retCurrent)
+                if currentQuestion == questions.count-1{ //if word is last one in the questions array
+                    return ReturnType(ret: ReturnValue.gameWon,i: retCurrent)
                 }
-                return (2, retCurrent);
+                return ReturnType(ret: ReturnValue.levelCleared, i: retCurrent);
             }
             else{
                 let retCurrent = currentIndexInQuestion
                 currentIndexInQuestion += 1
-                return (1, retCurrent)
+                return ReturnType(ret: ReturnValue.correctLetterInserted, i: retCurrent)
             }
         }
         
         currentNumberOfErrors += 1
         if maximumNumberOfErrorsAllowed == currentNumberOfErrors{
             currentNumberOfErrors = 0
-            return (3, 0)
+            return ReturnType(ret: ReturnValue.gameOver, i: 0)
         }
-        return (0, currentIndexInQuestion)
+        return ReturnType(ret: ReturnValue.inCorrectLetterInserted, i: currentIndexInQuestion)
     }
     
     
@@ -91,15 +128,16 @@ class GuessGame{
         currentQuestion = 0
         currentIndexInQuestion = 0
         currentNumberOfErrors = 0
+        shuffleAllTheProposeds()
     
     }
     func restartLevel(){
         currentIndexInQuestion = 0
+        questions[currentQuestion].proposedLetters = questions[currentQuestion].proposedLetters.shuffleCharacters()
         //currentNumberOfErrors = 0
     }
 }
 extension String {
-    
     subscript (i: Int) -> Character {
         return self[self.index(startIndex, offsetBy: i)]
     }
@@ -112,5 +150,14 @@ extension String {
         let start = index(startIndex, offsetBy: r.lowerBound)
         let end = index(start, offsetBy: r.upperBound - r.lowerBound)
         return self[Range(start ..< end)]
+    }
+    func shuffleCharacters() -> String{
+        var lettersPool = self
+        var retString  = ""
+        while lettersPool.characters.count > 0 {
+            let rand = Int(arc4random_uniform(UInt32(lettersPool.characters.count)))
+            retString.append(lettersPool.remove(at: lettersPool.index(lettersPool.startIndex, offsetBy: rand)))
+        }
+        return retString
     }
 }

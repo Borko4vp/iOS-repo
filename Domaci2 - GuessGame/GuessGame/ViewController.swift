@@ -31,23 +31,23 @@ class ViewController: UIViewController {
     @IBAction func letterBtnTapped(_ sender: UIButton) {
         if let letterLabel = sender.titleLabel{
             if let letter = letterLabel.text, 1 == letterLabel.text?.characters.count{
-                //send the tapped letter to the game
+                //send the tapped letter to the game and process the result
                 if let checkRet = game?.check(letter: letter){
                     print("\(checkRet)")
                     switch checkRet.retValue{
-                    case 0: break
-                    case 1:
-                        setCorrectLetterColorAndTitle(title: letterLabel.text!, color: UIColor.yellow, withIndex:checkRet.Index)
+                    case ReturnValue.inCorrectLetterInserted: break
+                    case ReturnValue.correctLetterInserted:
+                        setCorrectLetterColorAndTitle(title: letterLabel.text!, color: UIColor.yellow, withIndex:checkRet.index)
                         disableBtn(btn: sender)
-                    case 2:
-                        setCorrectLetterColorAndTitle(title: letterLabel.text!, color: UIColor.yellow, withIndex:checkRet.Index)
+                    case ReturnValue.levelCleared:
+                        setCorrectLetterColorAndTitle(title: letterLabel.text!, color: UIColor.yellow, withIndex:checkRet.index)
                         disableBtn(btn: sender)
                         showAlert()
-                    case 3:
+                    case ReturnValue.gameOver:
                         createPopUpViewWith(text: "GAME OVER", andColor:UIColor.darkGray)
                         disableAllLetterBtns()//game over
-                    case 4:
-                        setCorrectLetterColorAndTitle(title: letterLabel.text!, color: UIColor.yellow, withIndex:checkRet.Index)
+                    case ReturnValue.gameWon:
+                        setCorrectLetterColorAndTitle(title: letterLabel.text!, color: UIColor.yellow, withIndex:checkRet.index)
                         createPopUpViewWith(text: "YEYE!!!", andColor:UIColor.green)
                         disableAllLetterBtns()
                     default:break
@@ -116,7 +116,7 @@ class ViewController: UIViewController {
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        //Dispose of any resources that can be recreated.
     }
     func addImageToView(){
         imageView.image = UIImage(named: (game?.getCurrentQuestionImageName())!)
@@ -177,17 +177,17 @@ class ViewController: UIViewController {
     }
     func showAlert(){
         let alert: UIAlertController = UIAlertController(title: "Level clear", message: "you have completed the level, please choose ", preferredStyle: UIAlertControllerStyle.alert)
-        let okAction = UIAlertAction(title: "NextLevel", style: UIAlertActionStyle.default){ (handler: UIAlertAction) in
+        let nextAction = UIAlertAction(title: "NextLevel", style: UIAlertActionStyle.default){ (handler: UIAlertAction) in
             self.game?.nextQuestion()
             self.initLevel()
         }
-        let cancelAction = UIAlertAction(title: "RestartLevel", style: UIAlertActionStyle.default){ (handler: UIAlertAction) in
+        let restartAction = UIAlertAction(title: "RestartLevel", style: UIAlertActionStyle.default){ (handler: UIAlertAction) in
             //self.game?.nextQuestion()
             self.game?.restartLevel()
             self.initLevel()
         }
-        alert.addAction(okAction)
-        alert.addAction(cancelAction)
+        alert.addAction(nextAction)
+        alert.addAction(restartAction)
         self.present(alert, animated: true, completion: nil)
     }
 
